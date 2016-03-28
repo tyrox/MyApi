@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @sesione.user_id %>
+</p>
+
+<p>
+  <strong>Token auth:</strong>
+  <%= @sesione.token_auth %>
+</p>
+
+<%= link_to 'Edit', edit_sesione_path(@sesione) %> |
+<%= link_to 'Back', sesiones_path %>

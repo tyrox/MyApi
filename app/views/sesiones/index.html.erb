@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Sesiones</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Token auth</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sesiones.each do |sesione| %>
+      <tr>
+        <td><%= sesione.user_id %></td>
+        <td><%= sesione.token_auth %></td>
+        <td><%= link_to 'Show', sesione %></td>
+        <td><%= link_to 'Edit', edit_sesione_path(sesione) %></td>
+        <td><%= link_to 'Destroy', sesione, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sesione', new_sesione_path %>
