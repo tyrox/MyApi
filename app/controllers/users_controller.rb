@@ -34,31 +34,32 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    user = User.new(user_params)
 
-    respond_to do |format|
-      if @user.save
+    #respond_to do |format|
+      if user.save
         #format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-        #render :show, status: :200, location: @user
+        #format.json { render :show, status: :created, location: @user }
+        render json: user, status: 201, location: user
+        
       else
-        format.html { render :new }
-        #render json: @user.errors, status: :404
-      end
+        #format.html { render :new }
+       render json: user.errors, status: 422
+      #end
     end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
+    #respond_to do |format|
       if @user.update(user_params)
         #format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
+        render json: @user, status: 201, location: @user
       else
-        format.html { render :edit }
+        render json: @user.errors, status: 422
         #format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+      #end
     end
   end
 
@@ -66,10 +67,10 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
-    respond_to do |format|
+    #respond_to do |format|
       #format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+      render json: @user, status: 201, location: @user
+    #end
   end
 
   private
