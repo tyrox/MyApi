@@ -1,22 +1,25 @@
 class ProductsController < ApplicationController
   #Autenticar
-  before_action :authenticate
+  #before_action :authenticate
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   # GET /products
   # GET /products.json
   def index
     @products = Product.all
+    render json:@products, status:200    
   end
 
   # GET /products/1
   # GET /products/1.json
   def show
+    @products = Product.find(params[:id])
+    render json: @products, status: 200
   end
 
   # GET /products/new
   def new
-    @product = Product.new
+    @product = Product.new    
   end
 
   # GET /products/1/edit
@@ -26,48 +29,51 @@ class ProductsController < ApplicationController
   # POST /products
   # POST /products.json
   def create
-    @product = Product.new(product_params)
-
-    respond_to do |format|
+    @product = Product.new(product_params)    
       if @product.save
-        format.html { redirect_to @product, notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
+        #format.html { redirect_to @product, notice: 'Product was successfully created.' }
+        #format.json { render :show, status: :created, location: @product }
+        render json: @product, status: 201, location: @product
       else
-        format.html { render :new }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        #format.html { render :new }
+        #format.json { render json: @product.errors, status: :unprocessable_entity }
+        render json: @product.errors, status: 422
       end
-    end
+    #end
   end
 
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
-    respond_to do |format|
+    @product = Product.find(params[:id])
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
-        format.json { render :show, status: :ok, location: @product }
+        #format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+        #format.json { render :show, status: :ok, location: @product }
+        render json: @product, status: 200, location: @product
       else
-        format.html { render :edit }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        #format.html { render :edit }
+        #format.json { render json: @product.errors, status: :unprocessable_entity }
+        render json: @product.errors, status: 422
       end
-    end
+    #end
   end
 
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
     @product.destroy
-    respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    #respond_to do |format|
+      #format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
+      #format.json { head :no_content }
+      render json: @product, status: 201, location: @product
+    #end
   end
 
   private
     #Autenticación
     def authenticate
       authenticate_or_request_with_http_token do |token, options|
-        tk=token
+        @tk=token
         Session.find_by(auth_token: token)
       end
     end
