@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  #Autenticar
+  before_action :authenticate
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   # GET /products
@@ -62,6 +64,13 @@ class ProductsController < ApplicationController
   end
 
   private
+    #Autenticación
+    def authenticate
+      authenticate_or_request_with_http_token do |token, options|
+        tk=token
+        Session.find_by(auth_token: token)
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_product
       @product = Product.find(params[:id])

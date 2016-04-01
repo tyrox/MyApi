@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  #Autenticar
+  before_action :authenticate
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -18,7 +21,7 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    @user = User.new
+    user = User.new
   end
 
   # GET /users/1/edit
@@ -54,11 +57,11 @@ class UsersController < ApplicationController
   def update
     #respond_to do |format|
     user = User.find(params[:id])
-      if @user.update(user_params)
+      if user.update(user_params)
         #format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        render json: @user, status: 200, location: @user
+        render json: user, status: 200, location: user
       else
-        render json: @user.errors, status: 422
+        render json: user.errors, status: 422
         #format.json { render json: @user.errors, status: :unprocessable_entity }
       #end
     end
@@ -67,17 +70,25 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    user.destroy
     #respond_to do |format|
       #format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      render json: @user, status: 201, location: @user
+      render json: user, status: 201, location: user
     #end
   end
 
   private
+    #Autenticación
+    def authenticate
+      authenticate_or_request_with_http_token do |token, options|
+        tk=token
+        Session.find_by(auth_token: token)
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      user = User.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
