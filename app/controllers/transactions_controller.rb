@@ -1,6 +1,7 @@
 class TransactionsController < ApplicationController
   #Autenticar
   #before_action :authenticate 
+  protect_from_forgery unless: -> { request.format.json? }
   before_action :set_transaction, only: [:show, :edit, :update, :destroy]
 
   # GET /transactions
@@ -86,6 +87,6 @@ class TransactionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def transaction_params
-      params.require(:transaction).permit(:product_req_id, :product_offered_id)
+      params.permit(:product_req_id, :product_offered_id)
     end
 end

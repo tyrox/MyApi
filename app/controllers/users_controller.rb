@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   #Autenticar
   #before_action :authenticate
+  protect_from_forgery unless: -> { request.format.json? }
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -72,12 +73,12 @@ class UsersController < ApplicationController
 
   private
     #Autenticación
-    def authenticate
-      authenticate_or_request_with_http_token do |token, options|
-        @tk=token
-        Session.find_by(auth_token: token)
-      end
-    end
+    #def authenticate
+      #authenticate_or_request_with_http_token do |token, options|
+        #@tk=token
+        #Session.find_by(auth_token: token)
+      #end
+    #end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -86,6 +87,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :password, :firstname)
+      params.permit(:username, :password, :firstname)
     end
 end

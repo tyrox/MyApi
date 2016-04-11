@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   #Autenticar
-  #before_action :authenticate
+  protect_from_forgery unless: -> { request.format.json? }
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
   # GET /products
@@ -65,18 +65,14 @@ class ProductsController < ApplicationController
     #respond_to do |format|
       #format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
       #format.json { head :no_content }
-      render json: @product, status: 201, location: @product
+      render json: @product, status: 200, location: @product
     #end
   end
 
   private
     #Autenticación
-    def authenticate
-      authenticate_or_request_with_http_token do |token, options|
-        @tk=token
-        Session.find_by(auth_token: token)
-      end
-    end
+    
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_product
       @product = Product.find(params[:id])
@@ -84,6 +80,6 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:name, :description, :state)
+      params.permit(:name, :description, :state)
     end
 end

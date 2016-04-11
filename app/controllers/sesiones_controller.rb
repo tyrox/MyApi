@@ -72,6 +72,6 @@ class SesionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sesione_params
-      params.require(:sesione).permit(:user_id, :token_auth)
+      params.permit(:user_id, :token_auth)
     end
 end
